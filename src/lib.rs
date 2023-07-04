@@ -113,9 +113,10 @@ impl Log for Fenrir {
 
         // we do want to ignore logs which are created by the used networking library since this
         // would create an infinite loop
+        // also ignore our own logs
         // TODO: this check should move into the backend implementation
         let module = record.module_path().unwrap_or("");
-        if module.starts_with("ureq") || !self.enabled(record.metadata()) {
+        if module.starts_with("ureq") || module.starts_with("fenrir_rs") || !self.enabled(record.metadata()) {
             return;
         }
 
