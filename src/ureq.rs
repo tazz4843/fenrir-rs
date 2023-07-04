@@ -19,7 +19,7 @@ impl FenrirBackend for UreqBackend {
     fn send(&self, streams: &Streams, serializer: SerializationFn) -> Result<(), String> {
         use std::time::Duration;
         use ureq::AgentBuilder;
-        debug!("UreqBackend::send() called, sending log messages to Loki.");
+        trace!("UreqBackend::send() called, sending log messages to Loki.");
 
         let log_stream_text = serializer(streams).unwrap();
         trace!("Sending log messages to Loki: {}", log_stream_text);
