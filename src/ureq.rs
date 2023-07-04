@@ -19,8 +19,10 @@ impl FenrirBackend for UreqBackend {
     fn send(&self, streams: &Streams, serializer: SerializationFn) -> Result<(), String> {
         use std::time::Duration;
         use ureq::AgentBuilder;
+        debug!("UreqBackend::send() called, sending log messages to Loki.");
 
         let log_stream_text = serializer(streams).unwrap();
+        trace!("Sending log messages to Loki: {}", log_stream_text);
 
         let post_url = self.endpoint.clone().join("/loki/api/v1/push").unwrap();
         let agent = AgentBuilder::new().timeout(Duration::from_secs(10)).build();
@@ -35,7 +37,10 @@ impl FenrirBackend for UreqBackend {
                 );
             }
         }
-        let _ = request.send_string(log_stream_text.as_str()).unwrap();
+        if let Err(e) = request.send_string(log_stream_text.as_str()) {
+            error!("Failed to send log messages to Loki: {}", e);
+            return Err(e.to_string());
+        }
 
         Ok(())
     }

@@ -4,6 +4,9 @@ pub mod noop;
 #[cfg(feature = "ureq")]
 pub mod ureq;
 
+#[macro_use]
+extern crate log;
+
 #[cfg(feature = "structured_logging")]
 use log::kv::{Source, Visitor};
 use log::{Log, Metadata, Record};

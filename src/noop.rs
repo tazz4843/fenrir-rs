@@ -8,6 +8,7 @@ pub(crate) struct NoopBackend;
 
 impl FenrirBackend for NoopBackend {
     fn send(&self, _: &Streams, _: SerializationFn) -> Result<(), String> {
+        debug!("NoopBackend::send() called, not sending anything.");
         Ok(())
     }
 
