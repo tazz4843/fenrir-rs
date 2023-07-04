@@ -37,7 +37,9 @@ impl FenrirBackend for UreqBackend {
                 );
             }
         }
-        if let Err(e) = request.send_string(log_stream_text.as_str()) {
+        let response = request.send_string(log_stream_text.as_str());
+        trace!("Response from Loki: {:?}", response);
+        if let Err(e) = response {
             error!("Failed to send log messages to Loki: {}", e);
             return Err(e.to_string());
         }
